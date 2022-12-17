@@ -1,0 +1,124 @@
+package com.example.testing1;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.*;
+
+import com.example.testing1.R.id;
+
+import java.util.*;
+
+public class Quiz extends AppCompatActivity {
+    static List<String> questionList = new ArrayList<String>();
+    static List<String> answerList = new ArrayList<String>();
+    static List<String> ChoicesA = new ArrayList<String>();
+    static List<String> ChoicesB = new ArrayList<String>();
+    static List<String> ChoicesC = new ArrayList<String>();
+    static List<Integer> indexList = new ArrayList<Integer>();
+
+    static Button bA, bB, bC;
+    static TextView tN, tQ;
+    static LinearLayout lT, lQ, lC;
+
+    static int pos = 0;
+    static int num = 0;
+    static int score = 0;
+    static String answer = "";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_quiz);
+        bA = (Button) findViewById(id.buttonChoicesA);
+        bB = (Button) findViewById(id.buttonChoicesB);
+        bC = (Button) findViewById(id.buttonChoicesC);
+
+        tN = (TextView) findViewById(id.textViewQNum);
+        tQ = (TextView) findViewById(id.textViewQText);
+
+        lQ = (LinearLayout) findViewById(id.LayoutQuestion);
+        lC = (LinearLayout) findViewById(id.LayoutChoices);
+
+        list();
+        change();
+
+        bA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                answer = "A";
+                check();
+                num++;
+                change();
+            }
+        });
+        bB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                answer = "B";
+                check();
+                num++;
+                change();
+            }
+        });
+        bC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                answer = "C";
+                check();
+                num++;
+                change();
+            }
+        });
+    }
+    public static void change(){
+        if(num < indexList.size()){
+            tN.setText("Question #"+num);
+            pos = indexList.get(num);
+
+            tQ.setText(questionList.get(pos));
+            bA.setText("A:" + ChoicesA.get(pos));
+            bB.setText("B" + ChoicesB.get(pos));
+            bC.setText("C" + ChoicesC.get(pos));
+        }else {
+            tN.setText("Score: " + score);
+            lQ.setVisibility(View.INVISIBLE);
+            lC.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void check(){
+        int var = indexList.get(num);
+        if (answer.equals(answerList.get(var))){
+            score++;
+        }
+    }
+
+    public static void list(){
+        questionList.add("Question 01");
+        questionList.add("Question 02");
+        questionList.add("Question 03");
+
+        answerList.add("A");
+        answerList.add("A");
+        answerList.add("A");
+
+        ChoicesA.add("A01");
+        ChoicesA.add("A02");
+        ChoicesA.add("A03");
+
+        ChoicesB.add("B01");
+        ChoicesB.add("B02");
+        ChoicesB.add("B03");
+
+        ChoicesC.add("C01");
+        ChoicesC.add("C02");
+        ChoicesC.add("C03");
+
+        for(int x = 0; x < questionList.size(); x++){
+            indexList.add(x);
+        }
+        Collections.shuffle(indexList);
+    }
+}
